@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小五溫習大作戰 - 倒計時</title>
+    <style>
+        /* 全局設定 */
+        :root {
+            --bg-color: #f0f4f8;
+            --card-bg: #ffffff;
+            --text-main: #2d3748;
+            --text-sub: #718096;
+            /* 科目顏色 */
+            --color-chinese: #e53e3e; /* 紅 */
+            --color-english: #3182ce; /* 藍 */
+            --color-math: #d69e2e;    /* 黃/金 */
+            --color-gs: #38a169;      /* 綠 */
+        }
+
+        body {
+            font-family: "Microsoft JhengHei", "Heiti TC", sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(#cbd5e0 1px, transparent 1px);
+            background-size: 20px 20px;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        h1 {
+            color: var(--text-main);
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 0px #fff;
+        }
+
+        /* 網格佈局 */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* 卡片樣式 */
+        .timer-card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border-top: 8px solid #ccc;
+        }
+
+        .timer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* 科目特定顏色 */
+        .card-chinese { border-color: var(--color-chinese); }
+        .card-english { border-color: var(--color-english); }
+        .card-math { border-color: var(--color-math); }
+        .card-gs { border-color: var(--color-gs); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .subject-icon {
+            font-size: 2rem;
+        }
+
+        .exam-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        .exam-date {
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            background: #edf2f7;
+            padding: 4px 10px;
+            border-radius: 12px;
+            margin-top: 5px;
+            display: inline-block;
+        }
+
+        /* 倒計時數字區域 */
+        .countdown-display {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            background: #f7fafc;
+            border-radius: 15px;
+            padding: 10px;
+        }
+
+        .time-unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .time-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            font-family: 'Courier New', Courier, monospace; /* 等寬字體防止跳動 */
+        }
+
+        .time-label {
+            font-size: 0.8rem;
+            color: var(--text-sub);
+            margin-top: 5px;
+        }
+
+        /* 不同科目的數字顏色 */
+        .card-chinese .time-number { color: var(--color-chinese); }
+        .card-english .time-number { color: var(--color-english); }
+        .card-math .time-number { color: var(--color-math); }
+        .card-gs .time-number { color: var(--color-gs); }
+
+        /* 炸彈引信動畫 (裝飾用) */
+        .fuse {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, #ff0000 20%, transparent 70%);
+            opacity: 0.6;
+            animation: pulse 1s infinite;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.8); opacity: 0.4; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+            100% { transform: scale(0.8); opacity: 0.4; }
+        }
+
+        /* 手機適配 */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .time-number { font-size: 1.4rem; }
+            .grid-container { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🚀 小五溫習大作戰</h1>
+
+    <div class="grid-container">
+
+        <!-- 卡片 1: 中文 -->
+        <div class="timer-card card-chinese">
+            <div class="fuse"></div>
+            <div class="card-header">
+                <div>
+                    <h2 class="exam-title">5 下中默二</h2>
+                    <div class="exam-date">2026 年 3 月 11 日 (三)</div>
+                </div>
+                <div class="subject-icon">📖</div>
+            </div>
+            <div class="countdown-display" data-target="2026-03-11T08:00:00">
+                <div class="time-unit"><span class="time-number days">00</span><span class="time-label">日</span></div>
+                <div class="time-unit"><span class="time-number hours">00</span><span class="time-label">時</span></div>
+                <div class="time-unit"><span class="time-number minutes">00</span><span class="time-label">分</span></div>
+                <div class="time-unit"><span class="time-number seconds">00</span><span class="time-label">秒</span></div>
+            </div>
+        </div>
+
+        <!-- 卡片 2: 英文 -->
+        <div class="timer-card card-english">
+            <div class="fuse"></div>
+            <div class="card-header">
+                <div>
+                    <h2 class="exam-title">5 下英默二</h2>
+                    <div class="exam-date">2026 年 3 月 6 日 (五)</div>
+                </div>
+                <div class="subject-icon">🔤</div>
+            </div>
+            <div class="countdown-display" data-target="2026-03-06T08:00:00">
+                <div class="time-unit"><span class="time-number days">00</span><span class="time-label">日</span></div>
+                <div class="time-unit"><span class="time-number hours">00</span><span class="time-label">時</span></div>
+                <div class="time-unit"><span class="time-number minutes">00</span><span class="time-label">分</span></div>
+                <div class="time-unit"><span class="time-number seconds">00</span><span class="time-label">秒</span></div>
+            </div>
+        </div>
+
+        <!-- 卡片 3: 數學 -->
+        <div class="timer-card card-math">
+            <div class="fuse"></div>
+            <div class="card-header">
+                <div>
+                    <h2 class="exam-title">5 下數進評</h2>
+                    <div class="exam-date">2026 年 3 月 12 日 (四)</div>
+                    <div style="font-size: 0.8rem; color: #666; margin-top:2px;">(圓的認識、繪畫圓形)</div>
+                </div>
+                <div class="subject-icon">📐</div>
+            </div>
+            <div class="countdown-display" data-target="2026-03-12T08:00:00">
+                <div class="time-unit"><span class="time-number days">00</span><span class="time-label">日</span></div>
+                <div class="time-unit"><span class="time-number hours">00</span><span class="time-label">時</span></div>
+                <div class="time-unit"><span class="time-number minutes">00</span><span class="time-label">分</span></div>
+                <div class="time-unit"><span class="time-number seconds">00</span><span class="time-label">秒</span></div>
+            </div>
+        </div>
+
+        <!-- 卡片 4: 常識 -->
+        <div class="timer-card card-gs">
+            <div class="fuse"></div>
+            <div class="card-header">
+                <div>
+                    <h2 class="exam-title">5 下常進評</h2>
+                    <div class="exam-date">2026 年 3 月 5 日 (四)</div>
+                    <div style="font-size: 0.8rem; color: #666; margin-top:2px;">(第五冊 1、2 課)</div>
+                </div>
+                <div class="subject-icon">🌏</div>
+            </div>
+            <div class="countdown-display" data-target="2026-03-05T08:00:00">
+                <div class="time-unit"><span class="time-number days">00</span><span class="time-label">日</span></div>
+                <div class="time-unit"><span class="time-number hours">00</span><span class="time-label">時</span></div>
+                <div class="time-unit"><span class="time-number minutes">00</span><span class="time-label">分</span></div>
+                <div class="time-unit"><span class="time-number seconds">00</span><span class="time-label">秒</span></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function updateTimers() {
+            const timers = document.querySelectorAll('.countdown-display');
+            const now = new Date().getTime();
+
+            timers.forEach(timer => {
+                const targetDateStr = timer.getAttribute('data-target');
+                const targetDate = new Date(targetDateStr).getTime();
+                const distance = targetDate - now;
+
+                // 如果時間已到
+                if (distance < 0) {
+                    timer.innerHTML = "<div style='width:100%; text-align:center; color:red; font-weight:bold;'>考試進行中 / 已結束！加油！</div>";
+                    return;
+                }
+
+                // 計算時間單位
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                // 更新 HTML，補零操作 (例如 9 變成 09)
+                timer.querySelector('.days').innerText = days < 10 ? "0" + days : days;
+                timer.querySelector('.hours').innerText = hours < 10 ? "0" + hours : hours;
+                timer.querySelector('.minutes').innerText = minutes < 10 ? "0" + minutes : minutes;
+                timer.querySelector('.seconds').innerText = seconds < 10 ? "0" + seconds : seconds;
+            });
+        }
+
+        // 每秒更新一次
+        setInterval(updateTimers, 1000);
+        
+        // 頁面加載時立即執行一次，避免延遲
+        updateTimers();
+    </script>
+</body>
+</html>
