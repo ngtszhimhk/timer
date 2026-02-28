@@ -19,7 +19,16 @@
             color: #fbc531;
             text-shadow: 2px 2px #e1b12c;
             font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        
+        /* 拆彈專家引言樣式 */
+        .intro-text {
+            font-size: 1.2em;
+            color: #dcdde1;
             margin-bottom: 30px;
+            line-height: 1.6;
+            padding: 0 15px;
         }
 
         #timers-container {
@@ -114,7 +123,7 @@
 <body>
 
     <h1>💣 小五溫習大挑戰 ⏱️</h1>
-    <p>任務即將到期，請把握時間解除炸彈！</p>
+    <p class="intro-text">以下炸彈已開始倒數計時，請各位拆彈專家及時拆彈，<br>那麼多個炸彈，大家會怎樣分配時間去拆呢？</p>
     
     <div id="timers-container">
         </div>
@@ -125,7 +134,6 @@
         const tasks = [
             { title: "5下中默二", dateStr: "2026年3月11日(三)", targetTime: new Date("2026-03-11T08:00:00").getTime() },
             { title: "5下英默二", dateStr: "2026年3月12日(四)", targetTime: new Date("2026-03-12T08:00:00").getTime() },
-            // 已更新：5下數進評日期改為3月4日
             { title: "5下數進評 (圓的認識、繪畫圓形)", dateStr: "2026年3月4日(四)", targetTime: new Date("2026-03-04T08:00:00").getTime() },
             { title: "5下常進評 (第五冊1、2課 中國的地理、氣候)", dateStr: "2026年3月5日(四)", targetTime: new Date("2026-03-05T08:00:00").getTime() }
         ];
@@ -162,7 +170,7 @@
                 const cardEl = document.getElementById(`card-${index}`);
 
                 if (distance < 0) {
-                    countdownEl.innerHTML = "🎉 任務已結束！";
+                    countdownEl.innerHTML = "🎉 炸彈已解除！";
                     countdownEl.style.color = "#7f8fa6";
                     countdownEl.style.borderColor = "#7f8fa6";
                     cardEl.style.opacity = "0.6";
