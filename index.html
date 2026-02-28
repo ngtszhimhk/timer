@@ -54,13 +54,6 @@
             animation: pulse 1s infinite alternate;
         }
 
-        /* 翻轉的沙漏 */
-        .hourglass-icon {
-            font-size: 40px;
-            margin-left: auto;
-            animation: flip 2.5s infinite ease-in-out;
-        }
-
         .content {
             text-align: left;
             flex-grow: 1;
@@ -92,6 +85,7 @@
             border: 2px solid #4cd137;
         }
 
+        /* 緊急狀態（少於3天）的樣式 */
         .urgent .countdown {
             color: #e84118;
             border-color: #e84118;
@@ -104,13 +98,6 @@
             100% { transform: scale(1.15) rotate(-10deg); }
         }
 
-        @keyframes flip {
-            0% { transform: rotate(0deg); }
-            45% { transform: rotate(180deg); }
-            55% { transform: rotate(180deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @keyframes flash {
             0% { background: #222f3e; }
             100% { background: #4a1c1c; }
@@ -120,14 +107,13 @@
         @media (max-width: 600px) {
             .timer-card { flex-direction: column; text-align: center; }
             .bomb-icon { margin: 0 0 10px 0; }
-            .hourglass-icon { margin: 15px auto 0 auto; }
             .content { text-align: center; }
         }
     </style>
 </head>
 <body>
 
-    <h1>💣 小五溫習大挑戰 ⏳</h1>
+    <h1>💣 小五溫習大挑戰 ⏱️</h1>
     <p>任務即將到期，請把握時間解除炸彈！</p>
     
     <div id="timers-container">
@@ -139,8 +125,9 @@
         const tasks = [
             { title: "5下中默二", dateStr: "2026年3月11日(三)", targetTime: new Date("2026-03-11T08:00:00").getTime() },
             { title: "5下英默二", dateStr: "2026年3月12日(四)", targetTime: new Date("2026-03-12T08:00:00").getTime() },
-            { title: "5下數進評 (圓的認識、繪畫圓形)", dateStr: "2026年3月12日(四)", targetTime: new Date("2026-03-12T08:00:00").getTime() },
-            { title: "5下常進評 (中國的地理、氣候)", dateStr: "2026年3月5日(四)", targetTime: new Date("2026-03-05T08:00:00").getTime() }
+            // 已更新：5下數進評日期改為3月4日
+            { title: "5下數進評 (圓的認識、繪畫圓形)", dateStr: "2026年3月4日(四)", targetTime: new Date("2026-03-04T08:00:00").getTime() },
+            { title: "5下常進評 (第五冊1、2課 中國的地理、氣候)", dateStr: "2026年3月5日(四)", targetTime: new Date("2026-03-05T08:00:00").getTime() }
         ];
 
         // 依照日期先後自動排序，最急的排最上面
@@ -148,7 +135,7 @@
 
         const container = document.getElementById("timers-container");
 
-        // 產生卡片 HTML
+        // 產生卡片 HTML (已移除沙漏)
         tasks.forEach((task, index) => {
             const card = document.createElement("div");
             card.className = "timer-card";
@@ -161,7 +148,6 @@
                     <div class="date-text">作戰日期：${task.dateStr}</div>
                     <div class="countdown" id="countdown-${index}">計算中...</div>
                 </div>
-                <div class="hourglass-icon">⏳</div>
             `;
             container.appendChild(card);
         });
