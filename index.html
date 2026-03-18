@@ -129,13 +129,11 @@
         </div>
 
     <script>
-        // 設定默書與測驗的資料
-        // 設定時間為早上 8:00 (學校開始時間)
+        // 更新為兩項新的英默任務
+        // 設定截止時間為當天早上 8:00
         const tasks = [
-            { title: "5下中默二", dateStr: "2026年3月11日(三)", targetTime: new Date("2026-03-11T08:00:00").getTime() },
-            { title: "5下英默二", dateStr: "2026年3月12日(四)", targetTime: new Date("2026-03-12T08:00:00").getTime() },
-            { title: "5下數進評 (圓的認識、繪畫圓形)", dateStr: "2026年3月4日(四)", targetTime: new Date("2026-03-04T08:00:00").getTime() },
-            { title: "5下常進評 (第五冊1、2課 中國的地理、氣候)", dateStr: "2026年3月5日(四)", targetTime: new Date("2026-03-05T08:00:00").getTime() }
+            { title: "英默二 A及B部分", dateStr: "2026年3月24日(二)", targetTime: new Date("2026-03-24T08:00:00").getTime() },
+            { title: "英默二 C及D部分", dateStr: "2026年3月27日(五)", targetTime: new Date("2026-03-27T08:00:00").getTime() }
         ];
 
         // 依照日期先後自動排序，最急的排最上面
@@ -143,7 +141,7 @@
 
         const container = document.getElementById("timers-container");
 
-        // 產生卡片 HTML (已移除沙漏)
+        // 產生卡片 HTML
         tasks.forEach((task, index) => {
             const card = document.createElement("div");
             card.className = "timer-card";
@@ -153,7 +151,7 @@
                 <div class="bomb-icon">💣</div>
                 <div class="content">
                     <div class="title">${task.title}</div>
-                    <div class="date-text">作戰日期：${task.dateStr}</div>
+                    <div class="date-text">截止時間：${task.dateStr}</div>
                     <div class="countdown" id="countdown-${index}">計算中...</div>
                 </div>
             `;
